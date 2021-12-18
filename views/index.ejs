@@ -1,41 +1,180 @@
 <%- include('header'); -%>
-
 <main>
   <div class="container">
     <div class="card ">
       <div class="card-content">
+        <% if (auth.admin) { %>
+
         <div class="row">
           <div class="col s12">
             <ul class="tabs">
-              <li class="tab col s3"><a href="#test1">Билеты</a></li>
-              <li class="tab col s3"><a class="active" href="#test2">Сеансы</a></li>
-              <li class="tab col s3"><a href="#test3">Фильмы</a></li>
-              <li class="tab col s3"><a href="#test4">Жанры</a></li>
+              <li class="tab col"><a class="active" href="#test1">Билеты</a></li>
+                <li class="tab col"><a href="#test2">Сеансы</a></li>
+                <li class="tab col"><a href="#test3">Фильмы</a></li>
+                <li class="tab col"><a href="#test4">Жанры</a></li>
+                <li class="tab col"><a href="#test5">Продавцы</a></li>
+                <li class="tab col"><a href="#test6">Залы</a></li>
+       
             </ul>
           </div>
           <div id="test1" class="col s12">
             <h3>Журнал билетов</h3>
-            <table class="responsive-table">
+            <table class="orders-table">
               <thead>
                 <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
+                  <th>Фильм сессии</th>
+                  <th>Дата и время</th>
+                  <th>Место</th>
+                  <th>Кол-во</th>
+                  <th>Продавец</th>
+                  <th>Сумма</th>
+                  <th>Действия</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
+                <% for (let order of orders) { %>
+                  <tr data-id="<%= order._id %>">
+                    <td><%= order.session.film.name %></td>
+                    <td><%= new Date(order.datetime).toLocaleString()  %></td>
+                    <td><%= order.points  %></td>
+                    <td><%= order.count  %></td>
+                    <td><%= order.user ? order.user.name : '-' %></td>
+                    <td><%= order.amount  %></td>
+                    <td>
+                      <button class="btn-floating waves-effect waves-light flat red" onclick="cancelOrder('<%= order._id %>')"><i class="material-icons">delete</i></button>
+                    </td>
+                  </tr>
+                <% } %>
               </tbody>
             </table>
           </div>
-          <div id="test2" class="col s12">Test 2</div>
-          <div id="test3" class="col s12">Test 3</div>
+          <div id="test2" class="col s12">
+            <h3>Список сеансов</h3>
+            <div class="card">
+              <div class="card-content">
+                <div class="card-title">Добавить сеанс</div>
+                <div class="row">
+                  <div class="input-field col s6">
+                    <select id="session-film">
+                      <option value="" disabled selected>Выберите из списка</option>
+                      <% for (let film of films) { %>
+                        <option value="<%= film._id %>"><%= film.name %></option>
+                      <% } %>
+                    </select>
+                    <label for="session-film">Фильм</label>
+                  </div>
+                  <div class="input-field col s6">
+                    <select id="session-hall">
+                      <option value="" disabled selected>Выберите из списка</option>
+                      <% for (let hall of halls) { %>
+                        <option value="<%= hall._id %>"><%= hall.name %></option>
+                      <% } %>
+                    </select>
+                    <label for="session-hall">Зал</label>
+                  </div>
+
+                  <div class="input-field col s4">
+                    <input type="text" id="session-date" class="datepicker">
+                    <label for="session-date">Дата</label>
+                  </div>
+
+                  <div class="input-field col s4">
+                    <input type="text" id="session-time" class="timepicker">
+                    <label for="session-time">Время</label>
+                  </div>
+                  <div class="input-field col s4">
+                    <input type="number" id="session-price" class="validate">
+                    <label for="session-price">Цена</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <a class="right waves-effect waves-light btn" onclick="createSession()"><i class="material-icons right">add</i>Добавить</a>
+                </div>
+              </div>
+              
+            </div>
+            <div class="card">
+              <div class="card-content">
+                <table class="sessions-table">
+                  <thead>
+                    <tr>
+                      <th>Фильм</th>
+                      <th>Зал</th>
+                      <th>Дата</th>
+                      <th>Время</th>
+                      <th>Цена</th>
+                      <th>Действия</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (let session of sessions) { %>
+                      <tr data-id="<%= session._id %>">
+                        <td><%= session.film.name %></td>
+                        <td><%= session.hall.name  %></td>
+                        <td><%= session.date  %></td>
+                        <td><%= session.time  %></td>
+                        <td><%= session.price  %></td>
+                        <td>
+                          <button class="btn-floating waves-effect waves-light flat red" onclick="deleteSession('<%= session._id %>')"><i class="material-icons">delete</i></button>
+                        </td>
+                      </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div id="test3" class="col s12">
+            <h3>Список фильмов</h3>
+            <div class="card">
+              <div class="card-content">
+                <div class="card-title">Добавить фильм</div>
+                <div class="row">
+                  <div class="input-field col s6">
+                    <input placeholder="Ренессанс" id="film-name" type="text" class="validate">
+                    <label for="film-name">Название</label>
+                  </div>
+                  <div class="input-field col s6">
+                    <select id="film-ganre">
+                      <option value="" disabled selected>Выберите из списка</option>
+                      <% for (let ganre of ganres) { %>
+                        <option value="<%= ganre._id %>"><%= ganre.name %></option>
+                      <% } %>
+                    </select>
+                    <label for="film-ganre">Жанр</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <a class="right waves-effect waves-light btn" onclick="createFilm()"><i class="material-icons right">add</i>Добавить</a>
+                </div>
+              </div>
+              
+            </div>
+            <div class="card">
+              <div class="card-content">
+                <table class="films-table">
+                  <thead>
+                    <tr>
+                      <th>Название</th>
+                      <th>Жанр</th>
+                      <th>Действия</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (let film of films) { %>
+                      <tr data-id="<%= film._id %>">
+                        <td><%= film.name %></td>
+                        <td><%= film.ganre ? film.ganre.name : '-'  %></td>
+                        <td>
+                          <button class="btn-floating waves-effect waves-light flat red" onclick="deleteFilm('<%= film._id %>')"><i class="material-icons">delete</i></button>
+                        </td>
+                      </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
           <div id="test4" class="col s12">
             <h3>Список жанров</h3>
             <div class="card">
@@ -47,22 +186,24 @@
                     <label for="ganre-name">Название</label>
                   </div>
                   <div class="input-field col s6">
-                    <select>
+                    <select id="ganre-parent">
                       <option value="" disabled selected>Выберите из списка</option>
-                      <option value="1">Option 1</option>
+                      <% for (let ganre of ganres) { %>
+                        <option value="<%= ganre._id %>"><%= ganre.name %></option>
+                      <% } %>
                     </select>
-                    <label for="ganre-name">Родитель</label>
+                    <label for="ganre-parent">Родитель</label>
                   </div>
                 </div>
                 <div class="row">
-                  <a class="right waves-effect waves-light btn"><i class="material-icons right">add</i>Добавить</a>
+                  <a class="right waves-effect waves-light btn" onclick="createGanre()"><i class="material-icons right">add</i>Добавить</a>
                 </div>
               </div>
               
             </div>
             <div class="card">
               <div class="card-content">
-                <table>
+                <table class="ganres-table">
                   <thead>
                     <tr>
                       <th>Название</th>
@@ -71,24 +212,221 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <button class="btn-floating waves-effect waves-light flat red"><i class="material-icons">delete</i></button>
-                      </td>
-                    </tr>
+                    <% for (let ganre of ganres) { %>
+                      <tr data-id="<%= ganre._id %>">
+                        <td><%= ganre.name %></td>
+                        <td><%= ganre.parent ? ganre.parent.name : ''  %></td>
+                        <td>
+                          <button class="btn-floating waves-effect waves-light flat red" onclick="deleteGanre('<%= ganre._id %>')"><i class="material-icons">delete</i></button>
+                        </td>
+                      </tr>
+                    <% } %>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+          <div id="test5" class="col s12">
+            <h3>Продавцы</h3>
+            <div class="card">
+              <div class="card-content">
+                <div class="card-title">Добавить продавца</div>
+                <div class="row">
+                  <div class="input-field col s4">
+                    <input placeholder="Имя" id="username" type="text" class="validate">
+                    <label for="username">Название</label>
+                  </div>
+                  <div class="input-field col s4">
+                    <input placeholder="email@email.com" id="email" type="email" class="validate">
+                    <label for="email">Email</label>
+                  </div>
+                  <div class="input-field col s4">
+                    <input placeholder="" id="password" type="password" class="validate">
+                    <label for="password">Пароль</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <a class="right waves-effect waves-light btn" onclick="createUser()"><i class="material-icons right" >add</i>Добавить</a>
+                </div>
+              </div>
+              
+            </div>
+            <div class="card">
+              <div class="card-content">
+                <table class="users-table">
+                  <thead>
+                    <tr>
+                      <th>Имя</th>
+                      <th>Почта</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (let user of users) { %>
+                      <tr data-id="<%= user._id %>">
+                        <td><%= user.name %></td>
+                        <td><%= user.email %></td>
+                        <td>
+                          <button class="btn-floating waves-effect waves-light flat red" onclick="deleteUser('<%= user._id %>')"><i class="material-icons">delete</i></button>
+                        </td>
+                      </tr>
+                    <% } %>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div id="test6" class="col s12">
+            <h3>Залы</h3>
+            <div class="card">
+              <div class="card-content">
+                <div class="card-title">Добавить зал</div>
+                <div class="row">
+                  <div class="input-field col s4">
+                    <input placeholder="Имя" id="hall-name" type="text" class="validate">
+                    <label for="hall-name">Название</label>
+                  </div>
+                  <div class="input-field col s4">
+                    <input id="hall-rows" type="number" class="validate">
+                    <label for="hall-rows">Кол-во рядов</label>
+                  </div>
+                  <div class="input-field col s4">
+                    <input id="hall-cols" type="number" class="validate">
+                    <label for="hall-cols">Кол-во мест в ряду</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <a class="right waves-effect waves-light btn" onclick="createHall()"><i class="material-icons right" >add</i>Добавить</a>
+                </div>
+              </div>
+              
+            </div>
+            <div class="card">
+              <div class="card-content">
+                <table class="halls-table">
+                  <thead>
+                    <tr>
+                      <th>Имя</th>
+                      <th>Рядов</th>
+                      <th>Мест</th>
+                      <th>Действия</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (let hall of halls) { %>
+                      <tr data-id="<%= hall._id %>">
+                        <td><%= hall.name %></td>
+                        <td><%= hall.rows %></td>
+                        <td><%= hall.cols %></td>
+                        <td>
+                          <button class="btn-floating waves-effect waves-light flat red" onclick="deleteHall('<%= hall._id %>')"><i class="material-icons">delete</i></button>
+                        </td>
+                      </tr>
+                    <% } %>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
         </div>
+          <% } else { %>
+            <div class="row">
+              <div class="col s12">
+                <ul class="tabs">
+                  <li class="tab col"><a  href="#test1">Журнал</a></li>
+                  <li class="tab col"><a class="active" href="#test2">Оформление</a></li>
+                </ul>
+              </div>
+              <div id="test1" class="col s12">
+                <h3>Журнал билетов</h3>
+                <table class="orders-table">
+                  <thead>
+                    <tr>
+                      <th>Фильм сессии</th>
+                      <th>Дата и время</th>
+                      <th>Место</th>
+                      <th>Кол-во</th>
+                      <th>Продавец</th>
+                      <th>Сумма</th>
+                      <th>Действия</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (let order of orders) { %>
+                      <tr data-id="<%= order._id %>">
+                        <td><%= order.session.film.name %></td>
+                        <td><%= new Date(order.datetime).toLocaleString()  %></td>
+                        <td><%= order.points  %></td>
+                        <td><%= order.count  %></td>
+                        <td><%= order.user ? order.user.name : '-' %></td>
+                        <td><%= order.amount  %></td>
+                        <td>
+                          <button class="btn-floating waves-effect waves-light flat red" onclick="cancelOrder('<%= order._id %>')"><i class="material-icons">delete</i></button>
+                        </td>
+                      </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+              <div id="test2" class="col s12">
+                <div class="card">
+                  <div class="card-content">
+                    <div class="card-title">Забронировать</div>
+                    <div class="row">
+                      <div class="input-field col s8">
+                        <select onchange="selectSession(this)" id="order-session">
+                          <option value="" disabled selected>Выберите из списка</option>
+                          <% for (let session of sessions) { %>
+                            <option value="<%= session._id %>"><%= session.film.name %></option>
+                          <% } %>
+                        </select>
+                        <label for="order-session">Сеанс</label>
+                      </div>
+                      <div class="input-field col s4">
+                        <input value="1" min="1" onchange="selectSession(document.getElementById('order-session'))" type="number" id="order-count" class="validate">
+                        <label for="order-count">Кол-во</label>
+                      </div>
+                      <div class="input-field col s8">
+                        <p>Цена: <b class="price"></b></p>
+                        <p>Зал: <b class="hall"></b></p>
+                        <p>Кол-во мест: <b class="points"></b></p>
+                        <p>Дата: <b class="date"></b></p>
+                        <p>Время: <b class="time"></b></p>
+                        <p>Сумма: <b class="amount"></b></p>
+                      </div>
+                      <div class="input-field col s4">
+                        <input type="text" id="order-points" class="validate">
+                        <label for="order-points">Места</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <a class="right waves-effect waves-light btn" onclick="createOrder()"><i class="material-icons right">add</i>Забронировать</a>
+                    </div>
+                  </div>
+                  
+                </div>
+               
+              </div>
+            </div>
+            <% } %>
               
         
       </div>
     </div>
   </div>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
 
+
+<script src="/javascripts/auth.js"></script>
+<script src="/javascripts/ganres.js"></script>
+<script src="/javascripts/halls.js"></script>
+<script src="/javascripts/films.js"></script>
+<script src="/javascripts/sessions.js"></script>
+
+<script>
+  let sessions =  <%- JSON.stringify(sessions) %>
+</script>
 <%- include('footer'); -%>

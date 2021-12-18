@@ -13,10 +13,10 @@
               <label for="first_name">Email</label>
             </div>
             <div class="input-field col s6">
-              <input placeholder="" id="first_name" type="password" class="validate">
-              <label for="first_name">Password</label>
+              <input placeholder="" id="password" type="password" class="validate">
+              <label for="password">Password</label>
             </div>
-            <a class="right waves-effect waves-light btn"><i class="material-icons right">east</i>Войти</a>
+            <a class="right waves-effect waves-light btn" onclick="verifyAuth()"><i class="material-icons right">east</i>Войти</a>
           </div>
           
         </form>
@@ -24,5 +24,8 @@
     </div>
   </div>
 </main>
+
+
+<script src="/javascripts/auth.js"></script>
 
 <%- include('footer'); -%>
