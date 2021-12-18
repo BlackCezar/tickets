@@ -34,7 +34,7 @@
               <tbody>
                 <% for (let order of orders) { %>
                 <tr data-id="<%= order._id %>">
-                  <td><%= order.session.film ? order.session.film.name : '-' %></td>
+                  <td><%= order.session && order.session.film ? order.session.film.name : '-' %></td>
                   <td><%= new Date(order.datetime).toLocaleString()  %></td>
                   <td><%= order.points  %></td>
                   <td><%= order.count  %></td>
@@ -367,7 +367,7 @@
               <tbody>
                 <% for (let order of orders) { %>
                 <tr data-id="<%= order._id %>">
-                  <td><%= order.session.film ? order.session.film.name : '-' %></td>
+                  <td><%= order.session && order.session.film ? order.session.film.name : '-' %></td>
                   <td><%= new Date(order.datetime).toLocaleString()  %></td>
                   <td><%= order.points  %></td>
                   <td><%= order.count  %></td>
