@@ -1,6 +1,6 @@
 async function createHall() {
     let hallName = document.getElementById('hall-name').value
-    if (!document.querySelector('.halls-form').checkValidity() && hallName.trim().length !== 0) {
+    if (!document.querySelector('.halls-form').checkValidity() && hallName.trim().length === 0) {
         M.toast({html: 'Заполните все данные', classes: 'rounded red white-text'}) 
     } else {
         let hallRows = document.getElementById('hall-rows').value
