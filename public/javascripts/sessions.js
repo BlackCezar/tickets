@@ -81,6 +81,20 @@ async function deleteSession(id) {
     }
 }
 
+
+async function cancelOrder(id) {
+    let resp = await fetch('/orders/' + id, {
+        method: 'DELETE',
+    })
+    if (resp) { 
+        resp = await resp.json()
+        if (resp.deletedCount > 0) {
+            document.querySelector(`.orders-table tr[data-id="${id}"]`).remove()
+        }
+    }
+}
+ 
+
 async function selectSession(el) {
     let id = el.value
     let session = sessions.find(s => s._id === id)
