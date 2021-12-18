@@ -74,16 +74,16 @@
                   </div>
 
                   <div class="input-field col s4">
-                    <input type="text" id="session-date" class="datepicker">
+                    <input type="text" id="session-date" required class="datepicker">
                     <label for="session-date">Дата</label>
                   </div>
 
                   <div class="input-field col s4">
-                    <input type="text" id="session-time" class="timepicker">
+                    <input type="text" id="session-time" required class="timepicker">
                     <label for="session-time">Время</label>
                   </div>
                   <div class="input-field col s4">
-                    <input type="number" id="session-price" class="validate">
+                    <input type="number" min="1" id="session-price" required class="validate">
                     <label for="session-price">Цена</label>
                   </div>
                 </div>
@@ -131,7 +131,7 @@
                 <div class="card-title">Добавить фильм</div>
                 <div class="row">
                   <div class="input-field col s6">
-                    <input placeholder="Ренессанс" id="film-name" type="text" class="validate">
+                    <input placeholder="Ренессанс" required id="film-name" type="text" class="validate">
                     <label for="film-name">Название</label>
                   </div>
                   <div class="input-field col s6">
@@ -182,7 +182,7 @@
                 <div class="card-title">Добавить жанр</div>
                 <div class="row">
                   <div class="input-field col s6">
-                    <input placeholder="Триллер" id="ganre-name" type="text" class="validate">
+                    <input placeholder="Триллер" required id="ganre-name" type="text" class="validate">
                     <label for="ganre-name">Название</label>
                   </div>
                   <div class="input-field col s6">
@@ -233,15 +233,15 @@
                 <div class="card-title">Добавить продавца</div>
                 <div class="row">
                   <div class="input-field col s4">
-                    <input placeholder="Имя" id="username" type="text" class="validate">
+                    <input placeholder="Имя" id="username" required type="text" class="validate">
                     <label for="username">Название</label>
                   </div>
                   <div class="input-field col s4">
-                    <input placeholder="email@email.com" id="email" type="email" class="validate">
+                    <input placeholder="email@email.com" required id="email" type="email" class="validate">
                     <label for="email">Email</label>
                   </div>
                   <div class="input-field col s4">
-                    <input placeholder="" id="password" type="password" class="validate">
+                    <input placeholder="" minlength="6" required id="password" type="password" class="validate">
                     <label for="password">Пароль</label>
                   </div>
                 </div>
@@ -283,15 +283,15 @@
                 <div class="card-title">Добавить зал</div>
                 <div class="row">
                   <div class="input-field col s4">
-                    <input placeholder="Имя" id="hall-name" type="text" class="validate">
+                    <input required placeholder="Имя" id="hall-name" type="text" class="validate">
                     <label for="hall-name">Название</label>
                   </div>
                   <div class="input-field col s4">
-                    <input id="hall-rows" type="number" class="validate">
+                    <input id="hall-rows" min="1" required type="number" class="validate">
                     <label for="hall-rows">Кол-во рядов</label>
                   </div>
                   <div class="input-field col s4">
-                    <input id="hall-cols" type="number" class="validate">
+                    <input id="hall-cols" min="1" required type="number" class="validate">
                     <label for="hall-cols">Кол-во мест в ряду</label>
                   </div>
                 </div>
@@ -397,7 +397,7 @@
                         <p>Сумма: <b class="amount"></b></p>
                       </div>
                       <div class="input-field col s4">
-                        <input type="text" id="order-points" class="validate">
+                        <input type="text" required id="order-points" class="validate">
                         <label for="order-points">Места</label>
                       </div>
                     </div>
