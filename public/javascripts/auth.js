@@ -21,10 +21,10 @@ async function verifyAuth() {
 }
 
 async function createUser() {
-    if (document.querySelector('.users-form').checkValidity()) {
+    let username = document.getElementById('username').value
+    if (document.querySelector('.users-form').checkValidity() && username.trim().length > 0) {
         let password = document.getElementById('password').value
         let email = document.getElementById('email').value
-        let username = document.getElementById('username').value
     
         let resp = await fetch('/users', {
             method: 'POST',

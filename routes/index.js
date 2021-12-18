@@ -14,7 +14,7 @@ router.get('/', async function(req, res, next) {
     let orders = await Orders.find().populate('session').populate('user')
 
     for (order of orders) {
-      order.session.film = await Films.findOne({_id: order.session.film})
+      if (order.session && order.session.film) order.session.film = await Films.findOne({_id: order.session.film})
     }
 
     console.log(orders[0])
