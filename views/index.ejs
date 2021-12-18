@@ -138,7 +138,7 @@
                     <label for="film-name">Название</label>
                   </div>
                   <div class="input-field col s6">
-                    <select id="film-ganre">
+                    <select required id="film-ganre">
                       <option value="" disabled selected>Выберите из списка</option>
                       <% for (let ganre of ganres) { %>
                       <option value="<%= ganre._id %>"><%= ganre.name %></option>
